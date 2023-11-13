@@ -1,4 +1,5 @@
 const CHALLENGE_DO_NOT_USE_IN_REAL_LIFE = Uint8Array.from([1,1,2,3,5]);
+const URL = "deephand.github.io";
 
 const showError = function(error) {
   const elem = document.getElementById("error");
@@ -82,6 +83,10 @@ let createPasskey = async function() {
         name: username,
         displayName: username,
       },
+      rp: {
+        name: URL,
+        id: URL,
+      }
     }
   });
   if (!credential) {
