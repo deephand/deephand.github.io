@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Passkey demo</title>
+
+    <script src="script.js" defer></script>
+  </head>  
+  <body>
+    <h2>
+      Conditional passkey demo
+    </h2>
+    <div class="error" id="error" style="display: none;"></div>
+    <form class="form-container" action="signin.html" method="get">
+      <input id="username" value="" placeholder="username" 
+          autocomplete="webauthn" autofocus/>
+      <br/>
+      <input id="password" value="" placeholder="password" required 
+          type="password" autocomplete="current-password webauthn"/>
+      <br/>
+      <button id="login" type="submit">
+        <strong>Sign-in / Sign-up</strong>
+      </button>
+      </div> 
+    </form>
+  </body>
+</html>
