@@ -89,6 +89,10 @@ let createPasskey = async function() {
       rp: {
         name: URL,
         id: URL,
+      },
+      authenticatorSelection: {
+        authenticatorAttachment: "platform",
+        requireResidentKey: true,
       }
     }
   });
