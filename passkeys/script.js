@@ -1,6 +1,8 @@
 const CHALLENGE_DO_NOT_USE_IN_REAL_LIFE = Uint8Array.from([1,1,2,3,5]);
 const URL = "deephand.github.io";
 
+const abortController = new AbortController();
+
 const showError = function(error) {
   const elem = document.getElementById("error");
   elem.innerText = error;
@@ -41,7 +43,6 @@ let checkUserVerifyingPlatformAuthenticator = async function() {
 
 let conditionalLogin = async function() {
   if (!checkConditionalMediation()) return;
-  const abortController = new AbortController();
 
   const publicKeyCredentialRequestOptions = {
     challenge: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE ,
@@ -70,6 +71,8 @@ let createPasskey = async function() {
       !checkUserVerifyingPlatformAuthenticator()) {
     return;
   }
+  abortController.abort();
+  
   const username = document.getElementById("username").value;
   const credential = await navigator.credentials.create({
     publicKey: {
