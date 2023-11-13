@@ -44,7 +44,7 @@ let conditionalLogin = async function() {
   const abortController = new AbortController();
 
   const publicKeyCredentialRequestOptions = {
-    challenge: new ArrayBuffer([1, 2 ,3]) ,
+    challenge: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE ,
     // The same RP ID as used during registration
     // rpId: 'deephand.github.io',
   };
@@ -79,7 +79,7 @@ let createPasskey = async function() {
         {alg: -257, type: "public-key"},
       ],
       user: {
-        id: Array.from(username).map(char => char.codePointAt(0)),
+        id: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE,
         name: username,
         displayName: username,
       },
