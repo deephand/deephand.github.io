@@ -90,3 +90,5 @@ let createPasskey = async function() {
   }
   showMessage("Credential created: " + username);
 }
+
+document.getElementById("createPasskey").onclick = createPasskey;
