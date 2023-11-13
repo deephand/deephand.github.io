@@ -63,9 +63,6 @@ let conditionalLogin = async function() {
   window.location('passkeys/welcome.html');
 }
 
-conditionalLogin();
-
-
 let createPasskey = async function() {
   if (!checkConditionalMediation() ||
       !checkUserVerifyingPlatformAuthenticator()) {
@@ -103,4 +100,16 @@ let createPasskey = async function() {
   showMessage("Credential created: " + username);
 }
 
+let updateFormForExtraField = function() {
+  const extraFieldCheckbox = document.getElementById("extraFieldCheckbox");
+  if (extraFieldCheckbox.checked) {
+    document.getElementById("extraField").style.display = "block";
+  } else {
+    document.getElementById("extraField").style.display = "none";
+  }
+}
+
 document.getElementById("createPasskey").onclick = createPasskey;
+document.getElementById("extraFieldCheckbox").onclick = updateFormForExtraField;
+
+conditionalLogin();

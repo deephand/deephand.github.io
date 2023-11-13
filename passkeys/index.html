@@ -9,10 +9,16 @@
     <h2>
       Conditional passkey demo
     </h2>
+    <input type="checkbox" id="extraFieldCheckbox" name="extraFieldCheckbox">
+    <label for="extraFieldCheckbox"> Check this for a field in between the username and password fields.</label>
+    </br>
     <div class="error" id="error" style="display: none;"></div>
     <form class="form-container" action="welcome.html" method="get">
       <input id="username" value="" placeholder="username" 
           autocomplete="webauthn" autofocus/>
+      <br/>
+      <input id="extraField" value="" placeholder="extra"
+          style="display: none;"/>
       <br/>
       <input id="password" value="" placeholder="password" required 
           type="password" autocomplete="current-password webauthn"/>
