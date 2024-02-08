@@ -7,6 +7,10 @@ h2 {
     color:white
 }
 
+.info {
+    background-color: greenyellow;
+}
+
 .message {
     background-color: cyan;
     color:black

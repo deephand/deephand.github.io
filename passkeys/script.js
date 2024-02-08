@@ -12,6 +12,8 @@ const showMessageAt = function(message, elementId) {
 let checkWebAuthn = async function() {
   if (!window.PublicKeyCredential) {
     showMessageAt("WebAuthn is not available", "publicKeyCredentialError");
+  } else {
+    showMessageAt("WebAuthn is available", "publicKeyCredentialAvailability");
   }
 }
 
