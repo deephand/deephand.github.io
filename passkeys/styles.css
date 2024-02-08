@@ -1,0 +1,27 @@
+h2 {
+    color: red
+}
+
+.error {
+    background-color: red;
+    color:white
+}
+
+.message {
+    background-color: cyan;
+    color:black
+}
+
+.column-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.column-container * {
+    margin: 2px
+}

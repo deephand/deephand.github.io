@@ -3,16 +3,16 @@ const URL = "deephand.github.io";
 
 const abortController = new AbortController();
 
-const showError = function(error) {
-  const elem = document.getElementById("error");
-  elem.innerText = error;
+const showMessageAt = function(message, elementId) {
+  const elem = document.getElementById(elementId);
+  elem.innerText = message;
   elem.style.display = 'block';
 }
 
-const showMessage = function(message) {
-  const elem = document.getElementById("message");
-  elem.innerText = message;
-  elem.style.display = 'block';
+let checkWebAuthn = async function() {
+  if (!window.PublicKeyCredential) {
+    showMessageAt("WebAuthn is not available", "publicKeyCredentialError");
+  }
 }
 
 let checkConditionalMediation = async function() {
@@ -21,7 +21,7 @@ let checkConditionalMediation = async function() {
   }
   const conditionalMediationAvailable = await PublicKeyCredential.isConditionalMediationAvailable();  
   if (!conditionalMediationAvailable) {
-    showError("Conditional mediation is not available");
+    showMessageAt("Conditional mediation is not available", "conditionalMediationError");
     return false;
   }
   return true;
@@ -35,7 +35,7 @@ let checkUserVerifyingPlatformAuthenticator = async function() {
   const userVerifyingPlatformAuthenticatorAvailable = await
       PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
   if (!userVerifyingPlatformAuthenticatorAvailable) {
-    showError("User verifying platform authenticator unavailable");
+    showMessageAt("User verifying platform authenticator unavailable", "userVerifyingPlatformAuthenticatorError");
   }
   return userVerifyingPlatformAuthenticatorAvailable;
 }
@@ -94,10 +94,10 @@ let createPasskey = async function() {
     }
   });
   if (!credential) {
-    showError("Cannot create credential!");
+    showMessageAt("Cannot create credential!", "message");
     return;
   }
-  showMessage("Credential created: " + username);
+  showMessageAt("Credential created: " + username, "message");
 }
 
 let updateFormForExtraField = function() {
@@ -112,4 +112,5 @@ let updateFormForExtraField = function() {
 document.getElementById("createPasskey").onclick = createPasskey;
 document.getElementById("extraFieldCheckbox").onclick = updateFormForExtraField;
 
+checkWebAuthn();
 conditionalLogin();
