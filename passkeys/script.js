@@ -8,7 +8,7 @@ const PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS = {
 
 const URL = "deephand.github.io";
 
-const abortController = new AbortController();
+let abortController;
 
 const showMessageAt = function(message, elementId) {
   const elem = document.getElementById(elementId);
@@ -49,15 +49,20 @@ let checkUserVerifyingPlatformAuthenticator = async function() {
   return userVerifyingPlatformAuthenticatorAvailable;
 }
 
+let handleCredentialError = function(error) {
+  console.log(error);
+}
+
 
 let conditionalLogin = async function() {
   if (!checkConditionalMediation()) return;
 
+  abortController = new AbortController();
   const credential = await navigator.credentials.get({
     publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
     signal: abortController.signal,
     mediation: 'conditional',
-  });
+  }).catch(handleCredentialError);
 
   if (!credential) {
     return;
@@ -68,7 +73,6 @@ let conditionalLogin = async function() {
 
 let signInWithPasskey = async function() {
   if (abortController) {
-    abortController.abort();
   }
   const credential = await navigator.credentials.get({
     publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
