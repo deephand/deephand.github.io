@@ -1,4 +1,11 @@
 const CHALLENGE_DO_NOT_USE_IN_REAL_LIFE = Uint8Array.from([1,1,2,3,5]);
+
+const PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS = {
+  challenge: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE ,
+  // The same RP ID as used during registration
+  rpId: 'deephand.github.io',
+};
+
 const URL = "deephand.github.io";
 
 const abortController = new AbortController();
@@ -46,16 +53,23 @@ let checkUserVerifyingPlatformAuthenticator = async function() {
 let conditionalLogin = async function() {
   if (!checkConditionalMediation()) return;
 
-  const publicKeyCredentialRequestOptions = {
-    challenge: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE ,
-    // The same RP ID as used during registration
-    // rpId: 'deephand.github.io',
-  };
-
   const credential = await navigator.credentials.get({
-    publicKey: publicKeyCredentialRequestOptions,
+    publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
     signal: abortController.signal,
     mediation: 'conditional',
+  });
+
+  if (!credential) {
+    return;
+  }
+
+  window.location('passkeys/welcome.html');
+}
+
+let signInWithPasskey = async function() {
+  const credential = await navigator.credentials.get({
+    publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
+    signal: abortController.signal,
   });
 
   if (!credential) {
@@ -113,6 +127,7 @@ let updateFormForExtraField = function() {
 
 document.getElementById("createPasskey").onclick = createPasskey;
 document.getElementById("extraFieldCheckbox").onclick = updateFormForExtraField;
+document.getElementById("signInWithPasskey").onclick = signInWithPasskey;
 
 checkWebAuthn();
 conditionalLogin();
