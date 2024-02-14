@@ -1,31 +1,81 @@
-h2 {
-    color: red
-}
+/* CSS files add styling rules to your content */
 
-.error {
-    background-color: red;
-    color:white
-}
-
-.info {
-    background-color: greenyellow;
-}
-
-.message {
-    background-color: cyan;
-    color:black
-}
-
-.column-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.row-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.column-container * {
-    margin: 2px
-}
+body {
+    font-family: helvetica, arial, sans-serif;
+    margin: 2em;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  h1 {
+    font-style: italic;
+    color: #373fff;
+  }
+  
+  div.error {
+    color: red;
+    background-color: #FFDDDD;
+    border: red 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  div.warning {
+    color: red;
+    background-color: #ffff40;
+    border: #aaaaaa 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  div.message {
+    color: blue;
+    background-color: #DDDDFF;
+    border: blue 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .code {
+    font-family: monospace;
+  }
+  
+  .form-container {
+    background-color: #eeeeee;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+  
+  .form-container label {
+    width: 45%;
+    display: inline-block;
+    text-align: right;
+    margin: 5px 0;
+  }
+  
+  .button-box {
+    text-align: center;
+    margin-top: 5px;
+  }
+  
+  .button-box button {
+    width: 200px;  background-color: #e9e9e9;
+    border-radius: 10px;
+    padding: 10px 0;
+  }
+  
+  .button-box button:hover {
+    background-color: white;
+  }
+  
+  .ok {
+    color: green;
+  }
+  
+  .error {
+    color: red;
+  }

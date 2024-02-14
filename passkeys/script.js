@@ -1,139 +1,94 @@
-const CHALLENGE_DO_NOT_USE_IN_REAL_LIFE = Uint8Array.from([1,1,2,3,5]);
+/* If you're feeling fancy you can add interactivity 
+    to your site with Javascript */
 
-const PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS = {
-  challenge: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE ,
-  // The same RP ID as used during registration
-  rpId: 'deephand.github.io',
-};
-
-const URL = "deephand.github.io";
-
-let abortController;
-
-const showMessageAt = function(message, elementId) {
-  const elem = document.getElementById(elementId);
-  elem.innerText = message;
-  elem.style.display = 'block';
-}
-
-let checkWebAuthn = async function() {
-  if (!window.PublicKeyCredential) {
-    showMessageAt("WebAuthn is not available", "publicKeyCredentialError");
-  } else {
-    showMessageAt("WebAuthn is available", "publicKeyCredentialAvailability");
-  }
-}
-
-let checkConditionalMediation = async function() {
-  if (!window.PublicKeyCredential || !PublicKeyCredential.isConditionalMediationAvailable) {
-    return;
-  }
-  const conditionalMediationAvailable = await PublicKeyCredential.isConditionalMediationAvailable();  
-  if (!conditionalMediationAvailable) {
-    showMessageAt("Conditional mediation is not available", "conditionalMediationError");
-    return false;
-  }
-  return true;
-} 
-
-let checkUserVerifyingPlatformAuthenticator = async function() {
-  if (!window.PublicKeyCredential ||
-      !PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
-    return;
-  }
-  const userVerifyingPlatformAuthenticatorAvailable = await
-      PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-  if (!userVerifyingPlatformAuthenticatorAvailable) {
-    showMessageAt("User verifying platform authenticator unavailable", "userVerifyingPlatformAuthenticatorError");
-  }
-  return userVerifyingPlatformAuthenticatorAvailable;
-}
-
-let handleCredentialError = function(error) {
-  console.log(error);
-}
-
-
-let conditionalLogin = async function() {
-  if (!checkConditionalMediation()) return;
-
-  abortController = new AbortController();
-  const credential = await navigator.credentials.get({
-    publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
-    signal: abortController.signal,
-    mediation: 'conditional',
-  }).catch(handleCredentialError);
-
-  if (!credential) {
-    return;
-  }
-
-  showMessageAt("Welcome: " + credential.id, "message");
-}
-
-let signInWithPasskey = async function() {
-  if (abortController) {
-  }
-  const credential = await navigator.credentials.get({
-    publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
-    signal: abortController.signal,
-  });
-
-  if (!credential) {
-    return;
-  }
-  showMessageAt("Welcome: " + credential.id, "message");
-}
-
-let createPasskey = async function() {
-  if (!checkConditionalMediation() ||
-      !checkUserVerifyingPlatformAuthenticator()) {
-    return;
-  }
-  abortController.abort();
-  
-  const username = document.getElementById("username").value;
-  const credential = await navigator.credentials.create({
-    publicKey: {
-      challenge: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE,
-      pubKeyCredParams: [
-        {alg: -7, type: "public-key"},
-        {alg: -257, type: "public-key"},
-      ],
-      user: {
-        id: CHALLENGE_DO_NOT_USE_IN_REAL_LIFE,
-        name: username,
-        displayName: username,
-      },
-      rp: {
-        name: URL,
-        id: URL,
-      },
-      authenticatorSelection: {
-        authenticatorAttachment: "platform",
-        requireResidentKey: true,
+    window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(
+      result => {
+        if (!result) {
+          showError("No platform authenticator found. If your OS does not come with one, try using devtools to set one up.");
+        }
+      }
+    );
+    
+    
+    let abortController;
+    let abortSignal;
+    
+    let startConditionalRequest = async () => {
+      if (window.PublicKeyCredential.isConditionalMediationAvailable) {
+        console.log("Conditional UI is understood by the browser");
+        if (!await window.PublicKeyCredential.isConditionalMediationAvailable()) {
+          showError("Conditional UI is understood by your browser but not available");
+          return;
+        }
+      } else {
+        // Normally, this would mean Conditional Mediation is not available. However, the "current"
+        // development implementation on chrome exposes availability via
+        // navigator.credentials.conditionalMediationSupported. You won't have to add this code
+        // by the time the feature is released.
+        if (!navigator.credentials.conditionalMediationSupported) {
+          showError("Your browser does not implement Conditional UI (are you running the right chrome/safari version with the right flags?)");
+          return;
+        } else {
+          console.log("This browser understand the old version of Conditional UI feature detection");
+        }
+      }
+      abortController = new AbortController();
+      abortSignal = abortController.signal;
+      
+      try {
+        let credential = await navigator.credentials.get({
+          signal: abortSignal,
+          publicKey: {
+            // Don't do this in production!
+            challenge: new Uint8Array([1, 2, 3, 4])
+          },
+          mediation: "conditional"
+        });
+        if (credential) {
+          let username = String.fromCodePoint(...new Uint8Array(credential.response.userHandle));
+          window.location = "site.html?username=" + username;
+        } else {
+          showError("Credential returned null");
+        }
+      } catch (error) {
+        if (error.name == "AbortError") {
+          console.log("request aborted");
+          return;
+        }
+        showError(error.toString());
       }
     }
-  });
-  if (!credential) {
-    showMessageAt("Cannot create credential!", "message");
-    return;
-  }
-  showMessageAt("Credential created: " + username, "message");
-}
-
-let updateFormForExtraField = function() {
-  const extraFieldCheckbox = document.getElementById("extraFieldCheckbox");
-  if (extraFieldCheckbox.checked) {
-    document.getElementById("extraField").style.display = "block";
-  } else {
-    document.getElementById("extraField").style.display = "none";
-  }
-}
-
-document.getElementById("createPasskey").onclick = createPasskey;
-document.getElementById("extraFieldCheckbox").onclick = updateFormForExtraField;
-document.getElementById("signInWithPasskey").onclick = signInWithPasskey;
-
-checkWebAuthn();
-conditionalLogin();
+    
+    let startNormalRequest = () => {
+      console.log('starting webauthn conditional ui request');
+      navigator.credentials.get({
+        publicKey: {
+          // don't do this in production!
+          challenge: new Uint8Array([1, 2, 3, 4])
+        },
+      }).then(credential => {
+        if (credential) {
+          let username = String.fromCodePoint(...new Uint8Array(credential.response.userHandle));
+          window.location = "site.html?username=" + username;
+        } else {
+          showError("Credential returned null");
+        }
+      }).catch(error => {
+        showError(error.toString());
+      }).finally(() => {
+        startConditionalRequest();
+      });
+    }
+    
+    startConditionalRequest();
+    
+    document.getElementById("manual-login").addEventListener("click", (e) => {
+      e.preventDefault();
+      if (abortController) {
+        console.log("aborting request & starting new one");
+        // Abort the request synchronously.
+        // This lets us use the user activation from clicking the button on safari to trigger webauthn.
+        abortController.abort();
+      }
+      startNormalRequest();
+    });

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Sign up</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="common.js" defer></script>
+    <script src="sign-up.js" defer></script>
+  </head>  
+  <body>
+    <h1>WebAuthn Conditional UI Demo</h1>
+    <div class="error" id="error" style="display: none;">
+    </div>
+    <div class="message" id="message" style="display: none;">
+    </div>
+    <form class="form-container" id="create-account">
+      <div>
+        <label for="username">Username:</label>
+        <input name="username" id="username" value="hmiku" required />
+      </div>
+      <div>
+        <label for="name">Name:</label>
+        <input name="name" id="name" value="Hatsune Miku" required/>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input name="password" id="password" value="1234" required type="password"/>
+      </div>
+      <div class="button-box">
+        <button type="submit">
+          Create account
+        </button>
+      </div>
+    </form>
+    <a href="index.html">Back to log-in</a>
+  </body>
+</html>

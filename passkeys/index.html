@@ -1,43 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Passkey demo</title>
-
-    <script src="script.js" defer></script>
+    <title>WebAuthn Conditional UI Demo!</title>
+    
     <link rel="stylesheet" href="styles.css">
+    
+    <script src="common.js" defer></script>
+    <script src="script.js" defer></script>
   </head>  
   <body>
-    <h2>
-      Conditional passkey demo
-    </h2>
-    <div class="column-container">
-      <div class="row-container">
-        <input type="checkbox" id="extraFieldCheckbox" name="extraFieldCheckbox">
-        <label for="extraFieldCheckbox"> Check this for a field in between the username and password fields.</label>
-      </div>
-      <div class="error" id="publicKeyCredentialError" style="display: none;"></div>
-      <div class="info" id="publicKeyCredentialAvailability" style="display: none;"></div>
-      <div class="error" id="conditionalMediationError" style="display: none;"></div>
-      <div class="error" id="userVerifyingPlatformAuthenticatorError" style="display: none;"></div>
-      <form class="form-container column-container" action="welcome.html" method="get">
-        <input id="username" value="" placeholder="username" 
-            autocomplete="webauthn" autofocus/>
-        <input id="extraField" value="" placeholder="extra"
-            style="display: none;"/>
-        <input id="password" value="" placeholder="password" required 
-            type="password" autocomplete="current-password webauthn"/>
-        <button id="login" type="submit">
-          <strong>Sign-in / Sign-up with password</strong>
-        </button>
-      </form>
-      <button id="createPasskey">
-        <strong>Create a passkey</strong>
-      </button>
-      <button id="signInWithPasskey">
-        <strong>Sign in with a passkey</strong>
-      </button>
-      <div class="message" id="message" style="display: none;"></div>
-      <div class="error" id="credentialError" style="display: none;"></div>
+    <h1>WebAuthn Conditional UI Demo</h1>
+    <div class="warning" id="warning" style="display: none;"></div>
+    <div class="error" id="error" style="display: none;">
     </div>
+    <div class="message" id="message" style="display: none;">
+    </div>
+    <form class="form-container" action="site.html" method="get">
+      <label for="username">Username:</label>
+      <input name="username" id="login-username" value="" required autocomplete="webauthn" autofocus/>
+      <label for="username">Fake password:</label>
+      <input id="password" value="" required type="password" autocomplete="current-password webauthn"/>
+      <div class="button-box">
+        <button id="manual-login" type="submit">
+          Log-in with vanilla WebAuthn
+        </button>
+        <button id="login" type="submit">
+          <strong>Log-in</strong>
+        </button>
+      </div> 
+    </form>
+    
+    <p>
+      Don't have an account? <a href="create.html">Sign up</a>
+    </p>
+    
+    <hr>
   </body>
 </html>
