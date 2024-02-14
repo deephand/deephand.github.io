@@ -63,7 +63,7 @@ let conditionalLogin = async function() {
     return;
   }
 
-  window.location('passkeys/welcome.html');
+  showMessageAt("Welcome: " + credential.id, "message");
 }
 
 let signInWithPasskey = async function() {
@@ -75,8 +75,7 @@ let signInWithPasskey = async function() {
   if (!credential) {
     return;
   }
-
-  window.location('passkeys/welcome.html');
+  showMessageAt("Welcome: " + credential.id, "message");
 }
 
 let createPasskey = async function() {
