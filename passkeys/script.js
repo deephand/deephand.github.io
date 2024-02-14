@@ -17,7 +17,7 @@
       if (window.PublicKeyCredential.isConditionalMediationAvailable) {
         console.log("Conditional UI is understood by the browser");
         if (!await window.PublicKeyCredential.isConditionalMediationAvailable()) {
-          showError("Conditional UI is understood by your browser but not available");
+          showConditionalWarning("Conditional UI is understood by your browser but not available");
           return;
         }
       } else {
@@ -26,7 +26,7 @@
         // navigator.credentials.conditionalMediationSupported. You won't have to add this code
         // by the time the feature is released.
         if (!navigator.credentials.conditionalMediationSupported) {
-          showError("Your browser does not implement Conditional UI (are you running the right chrome/safari version with the right flags?)");
+          showConditionalWarning("Your browser does not implement Conditional UI (are you running the right chrome/safari version with the right flags?)");
           return;
         } else {
           console.log("This browser understand the old version of Conditional UI feature detection");
