@@ -67,6 +67,9 @@ let conditionalLogin = async function() {
 }
 
 let signInWithPasskey = async function() {
+  if (abortController) {
+    abortController.abort();
+  }
   const credential = await navigator.credentials.get({
     publicKey: PUBLIC_KEY_CREDENTIAL_REQUEST_OPTIONS,
     signal: abortController.signal,
