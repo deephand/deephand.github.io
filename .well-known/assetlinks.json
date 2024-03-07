@@ -29,9 +29,9 @@
         ],
         "target": {
             "namespace": "android_app",
-            "package_name": "com.example.android.webviewpasskeysdemo",
+            "package_name": "com.example.android.webviewpasskeydemo",
             "sha256_cert_fingerprints": [
-                "80:70:1C:85:D4:12:D6:28:65:AC:5C:38:62:DA:FB:A1:09:A6:D2:C6:1A:E8:C7:58:9A:07:B5:D3:01:0D:CB:B5"
+                "38:F2:8F:E9:CD:B4:54:D5:A9:67:C1:0C:22:FE:32:8A:4D:A9:D8:A0:AD:D8:86:15:C3:B7:CB:79:A7:C1:E7:F5"
             ]
         }
     }
